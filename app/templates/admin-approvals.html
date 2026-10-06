@@ -1,0 +1,78 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Approvals · Student Awards{% endblock %}
+
+{% block subpage_content %}
+<div class="workflow-heading">
+  <div>
+    <p class="section-kicker">Administrator workspace</p>
+    <h1>Volunteer Hour Approvals</h1>
+    <p>Inspect pending submissions before approving or rejecting them.</p>
+  </div>
+</div>
+
+<section class="workflow-card" aria-labelledby="pending-hours-heading">
+  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+    <h2 id="pending-hours-heading" class="h5 mb-0">Pending volunteer hours</h2>
+    <span class="record-count">{{ pending_submissions|length }} pending</span>
+  </div>
+
+  {% if pending_submissions %}
+  <div class="table-responsive">
+    <table class="table align-middle workflow-table mb-0">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Activity</th>
+          <th>Hours</th>
+          <th class="text-end">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for submission, student in pending_submissions %}
+        <tr>
+          <td>{{ student.username }}</td>
+          <td class="fw-semibold">{{ submission.activity_name }}</td>
+          <td>{{ format_hours(submission.hours) }}</td>
+          <td class="text-end">
+            <button class="btn btn-sm btn-outline-secondary" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#submission-{{ submission.id }}"
+                    aria-expanded="false" aria-controls="submission-{{ submission.id }}">
+              View details
+            </button>
+          </td>
+        </tr>
+        <tr class="submission-detail-row">
+          <td colspan="4" class="p-0 border-0">
+            <div class="collapse" id="submission-{{ submission.id }}">
+              <div class="submission-detail">
+                <dl class="detail-grid">
+                  <div><dt>Student</dt><dd>{{ student.username }}</dd></div>
+                  <div><dt>Activity</dt><dd>{{ submission.activity_name }}</dd></div>
+                  <div><dt>Organization</dt><dd>{{ submission.organization }}</dd></div>
+                  <div><dt>Activity date</dt><dd>{{ submission.activity_date.strftime('%d %b %Y') }}</dd></div>
+                  <div><dt>Hours</dt><dd>{{ format_hours(submission.hours) }}</dd></div>
+                  <div class="detail-wide"><dt>Supporting information</dt><dd>{{ submission.supporting_information or 'None provided' }}</dd></div>
+                </dl>
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                  <form method="post" action="{{ url_for('review_volunteer_submission', submission_id=submission.id) }}">
+                    <input type="hidden" name="decision" value="rejected">
+                    <button class="btn btn-outline-danger" type="submit">Reject</button>
+                  </form>
+                  <form method="post" action="{{ url_for('review_volunteer_submission', submission_id=submission.id) }}">
+                    <input type="hidden" name="decision" value="approved">
+                    <button class="btn btn-brand" type="submit">Approve</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">There are no pending volunteer-hour submissions.</div>
+  {% endif %}
+</section>
+{% endblock %}

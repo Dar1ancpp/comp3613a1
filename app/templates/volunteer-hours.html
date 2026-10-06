@@ -1,0 +1,76 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Log Volunteer Hours · Student Awards{% endblock %}
+
+{% block subpage_content %}
+<div class="workflow-heading">
+  <div>
+    <p class="section-kicker">Volunteer activity</p>
+    <h1>Log Volunteer Hours</h1>
+    <p>Submit your service activity for administrator review.</p>
+  </div>
+</div>
+
+<section class="workflow-card mb-4" aria-labelledby="log-hours-heading">
+  <h2 id="log-hours-heading" class="h5 mb-4">Activity details</h2>
+  <form method="post" action="{{ url_for('submit_volunteer_hours') }}" class="row g-3">
+    <div class="col-12 col-md-7">
+      <label class="form-label" for="activity_name">Activity name</label>
+      <input class="form-control" id="activity_name" name="activity_name" required>
+    </div>
+    <div class="col-12 col-md-5">
+      <label class="form-label" for="organization">Organization</label>
+      <input class="form-control" id="organization" name="organization" required>
+    </div>
+    <div class="col-12 col-sm-6">
+      <label class="form-label" for="hours">Hours</label>
+      <input class="form-control" id="hours" name="hours" type="number" min="0.25" step="0.25" required>
+    </div>
+    <div class="col-12 col-sm-6">
+      <label class="form-label" for="activity_date">Date</label>
+      <input class="form-control" id="activity_date" name="activity_date" type="date" required>
+    </div>
+    <div class="col-12">
+      <label class="form-label" for="supporting_information">Supporting information</label>
+      <textarea class="form-control" id="supporting_information" name="supporting_information" rows="4"></textarea>
+    </div>
+    <div class="col-12 d-flex justify-content-end">
+      <button class="btn btn-brand px-4" type="submit">Submit hours</button>
+    </div>
+  </form>
+</section>
+
+<section class="workflow-card" aria-labelledby="history-heading">
+  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+    <h2 id="history-heading" class="h5 mb-0">My submissions</h2>
+    <span class="record-count">{{ submissions|length }} total</span>
+  </div>
+  {% if submissions %}
+  <div class="table-responsive">
+    <table class="table align-middle workflow-table mb-0">
+      <thead>
+        <tr>
+          <th>Activity</th>
+          <th>Organization</th>
+          <th>Date</th>
+          <th>Hours</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for submission in submissions %}
+        <tr>
+          <td class="fw-semibold">{{ submission.activity_name }}</td>
+          <td>{{ submission.organization }}</td>
+          <td>{{ submission.activity_date.strftime('%d %b %Y') }}</td>
+          <td>{{ format_hours(submission.hours) }}</td>
+          <td><span class="status-pill status-{{ submission.status }}">{{ submission.status|title }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">No hours submitted yet. Your first submission will appear here as pending.</div>
+  {% endif %}
+</section>
+{% endblock %}

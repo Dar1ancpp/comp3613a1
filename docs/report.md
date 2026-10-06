@@ -180,10 +180,75 @@ The Manage Awards page also includes a table of existing prizes with prize name,
 - **Tone:** professional, modern, simple, student-friendly, and minimal rather than overly corporate.
 - **Wordmark:** text-only **Student Awards**; no custom MVP logo.
 - **Applied:** shared CSS brand/status tokens, public landing page, login, registration, and authenticated application shell. FastStarter placeholder branding and demo copy were removed; authentication and `/config` were retained.
+- **Theming verification:** registration, sign-in, and redirection worked correctly. After polish, the student confirmed that the landing page plus Student and Administrator authenticated views shared consistent branding, role-aware navigation was correct, authentication still worked, and no starter-template issues remained.
+- **Polish after verification:** reduced the landing hero and decorative teal circle, removed the duplicate registration CTA, standardized visible terminology on **Award**, replaced the starter sidebar/menu treatment with a clean role-aware application header, and removed workflow placeholder copy.
 
 ## Implementation notes
 
 One named workflow at a time. Include verify notes and polish / model revisions (Phase 5). Do not treat the first build as final.
+
+### Submit Volunteer Hours — verified
+
+- Implementation choice: one page with the submission form above the student's submission-history table.
+
+<!-- student-build:code-check
+workflow: Submit Volunteer Hours
+form: choice
+layer: other
+architecture_ok: yes
+implement_confidence: 0.85
+passed: yes
+note: Student selected a combined form-and-history page.
+-->
+
+<!-- student-build:code-check
+workflow: Submit Volunteer Hours
+form: snippet
+layer: model
+architecture_ok: yes
+implement_confidence: 0.88
+passed: yes
+note: Student completed VolunteerSubmission fields, constraints, foreign keys, defaults, and nullable review metadata from the ERD.
+-->
+
+<!-- student-build:code-check
+workflow: Submit Volunteer Hours
+form: snippet
+layer: router
+architecture_ok: yes
+implement_confidence: 0.91
+passed: yes
+note: Student completed a thin POST handler that binds form data and calls VolunteerSubmissionService with no persistence logic in the route.
+-->
+
+- **Verification:** the student confirmed the form matched the intended layout; required fields, success feedback, immediate history insertion, pending status, displayed activity data, and branding all worked correctly.
+- **Polish:** volunteer-hour values were changed to hide insignificant trailing zeroes (`4.0000000000` → `4`, while preserving values such as `4.5`). Stored decimal precision was not changed.
+- **Administrator review:** pending submissions are listed in the Administrator Approvals view. Expandable details expose student, activity, organization, activity date, hours, and supporting information before Approve or Reject. Review decisions update `status`, `reviewed_by`, and `reviewed_at`; the repository's verified-hours aggregate includes only `approved` submissions.
+- **End-to-end verification:** two pending submissions appeared in Administrator Approvals with complete expandable details. The student approved one and rejected the other, then confirmed that both statuses updated correctly in the Student history and that whole/fractional hours rendered cleanly as `4` and `4.5`.
+
+### Track Progress and Milestones — in progress
+
+- Implementation choice: leaderboard ties use dense ranking; equal verified-hour totals share a rank and the next distinct total receives the next consecutive rank.
+
+<!-- student-build:code-check
+workflow: Track Progress and Milestones
+form: choice
+layer: other
+architecture_ok: yes
+implement_confidence: 0.92
+passed: yes
+note: Student selected dense ranking for tied approved-hour totals.
+-->
+
+<!-- student-build:code-check
+workflow: Track Progress and Milestones
+form: snippet
+layer: model
+architecture_ok: yes
+implement_confidence: 0.93
+passed: yes
+note: Student completed the Milestone model with a unique required name, optional description, and positive decimal threshold.
+-->
 
 ## Deployed app
 

@@ -14,7 +14,6 @@
       <a class="btn-landing btn-landing-ghost" href="{{ url_for('logout') }}">Sign out</a>
       {% else %}
       <a class="btn-landing btn-landing-ghost" href="{{ url_for('login_view') }}">Sign in</a>
-      <a class="btn-landing btn-landing-primary" href="{{ url_for('register_view') }}">Get started</a>
       {% endif %}
     </div>
   </header>
@@ -24,7 +23,7 @@
     <h1 class="brand-wordmark">Student Awards</h1>
     <p class="landing-lead">
       Log volunteer hours, follow your progress toward meaningful milestones,
-      and redeem the rewards you have earned.
+      and redeem the awards you have earned.
     </p>
     <div class="landing-cta">
       {% if user_logged_in %}

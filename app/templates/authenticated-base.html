@@ -8,26 +8,20 @@
     }
 
     #wrapper {
-        display: flex;
         min-height: 100vh;
     }
 
     #sidebar {
-        min-width: 250px;
-        max-width: 250px;
-        min-height: 100vh;
-        transition: all 0.3s;
+        min-height: 72px;
         background: var(--brand-sidebar);
         color: #fff;
-    }
-
-    #sidebar.collapsed {
-        margin-left: -250px;
+        box-shadow: 0 2px 14px rgba(18, 48, 74, 0.14);
     }
 
     #sidebar .nav-link {
         color: var(--brand-sidebar-text);
         font-weight: 500;
+        padding: 0.55rem 0.85rem;
     }
 
     #sidebar .nav-link:hover,
@@ -39,22 +33,36 @@
 
     #sidebar .brand-wordmark {
         color: #fff;
-        font-size: 1.25rem;
-        text-align: center;
-        margin: 1rem 0 1.5rem;
+        font-size: 1.2rem;
+        white-space: nowrap;
     }
 
     #content {
         width: 100%;
-        padding: 1rem;
-        transition: all 0.3s;
-        display: flex;
-        flex-direction: column;
+        padding: clamp(1rem, 3vw, 2rem);
         background-color: var(--brand-bg);
     }
 
-    .navbar {
-        border-bottom: 1px solid #dce5ea;
+    .app-header {
+        max-width: 1180px;
+        margin: 0 auto;
+    }
+
+    .app-context {
+        color: var(--brand-muted);
+        font-size: 0.9rem;
+    }
+
+    .app-main {
+        max-width: 1180px;
+        margin: 0 auto;
+    }
+
+    @media (max-width: 640px) {
+        #sidebar .app-header {
+            align-items: flex-start !important;
+            flex-direction: column;
+        }
     }
 </style>
 {% block additional_styles %}{% endblock %}
@@ -62,35 +70,37 @@
 
 {% block content %}
 <div id="wrapper">
-    <nav id="sidebar" class="p-3 d-flex flex-column vh-100">
-        <div class="brand-wordmark">Student Awards</div>
-
-        <ul class="nav nav-pills flex-column gap-2 flex-grow-1">
+    <nav id="sidebar" class="px-3 py-2">
+        <div class="app-header d-flex align-items-center gap-4">
+        <a class="brand-wordmark text-decoration-none" href="{{ url_for('index_view') }}">Student Awards</a>
+        <ul class="nav nav-pills align-items-center gap-1 flex-grow-1">
             <li class="nav-item">
-                <a class="nav-link d-flex align-items-center {{ 'active' if request.url.path.startswith('/app') }}"
-                   href="{{ url_for('user_home_view') }}">
-                    <span class="material-symbols-outlined me-2">home</span>
-                    Home
+                <a class="nav-link {{ 'active' if request.url.path in ['/app', '/admin'] }}"
+                   href="{{ url_for('admin_home_view') if user.role == 'admin' else url_for('user_home_view') }}">
+                    {{ 'Admin dashboard' if user.role == 'admin' else 'Student dashboard' }}
                 </a>
             </li>
-            <li class="nav-item mt-auto">
-                <a class="nav-link d-flex align-items-center text-danger" href="{{ url_for('logout') }}">
-                    <span class="material-symbols-outlined me-2">logout</span>
-                    Logout
-                </a>
+            {% if user.role != 'admin' %}
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if request.url.path == '/app/hours' }}"
+                   href="{{ url_for('volunteer_hours_view') }}">Log hours</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if request.url.path == '/admin/approvals' }}"
+                   href="{{ url_for('admin_approvals_view') }}">Approvals</a>
+            </li>
+            {% endif %}
+            <li class="nav-item ms-auto">
+                <a class="nav-link" href="{{ url_for('logout') }}">Sign out</a>
             </li>
         </ul>
+        </div>
     </nav>
 
     <div id="content">
-        <nav class="navbar navbar-expand-lg bg-white mb-4 px-3 rounded-3 shadow-sm">
-            <button class="btn btn-outline-secondary" id="menu-toggle" type="button">
-                <span class="material-symbols-outlined md-dark">menu</span>
-            </button>
-            <div class="ms-auto d-flex align-items-center gap-3">
-                <span class="fw-semibold">Welcome, {{ user.username }}</span>
-            </div>
-        </nav>
+        <div class="app-main">
+        <div class="d-flex justify-content-end mb-3 app-context">Signed in as {{ user.username }}</div>
 
         <div class="row">
             <div class="col-12">
@@ -101,13 +111,8 @@
         </div>
 
         {% block subpage_content %}{% endblock %}
+        </div>
     </div>
 </div>
-
-<script>
-    document.getElementById("menu-toggle").addEventListener("click", function () {
-        document.getElementById("sidebar").classList.toggle("collapsed");
-    });
-</script>
 {% block subpage_scripts %}{% endblock %}
 {% endblock %}
