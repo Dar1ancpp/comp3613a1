@@ -1,17 +1,21 @@
 :root {
-  /* Phase 5 theming: Guide overwrites these from docs/report.md preferences */
-  --brand-name: "FastStarter";
-  --brand-bg: #0c1218;
-  --brand-surface: #f7f4ef;
-  --brand-ink: #14202b;
-  --brand-muted: #6a7a88;
-  --brand-accent: #c45c26;
-  --brand-accent-2: #2a6f6b;
-  --brand-sidebar: #14202b;
-  --brand-sidebar-text: #a8b4bf;
-  --brand-font-display: "Fraunces", Georgia, serif;
-  --brand-font-body: "Source Sans 3", "Segoe UI", sans-serif;
-  --brand-radius: 0.85rem;
+  --brand-name: "Student Awards";
+  --brand-primary: #12304a;
+  --brand-secondary: #0f8b8d;
+  --brand-bg: #f5f7f8;
+  --brand-surface: #ffffff;
+  --brand-ink: #172b3a;
+  --brand-muted: #647786;
+  --brand-accent: var(--brand-secondary);
+  --brand-accent-2: #58c4c6;
+  --brand-success: #21865a;
+  --brand-warning: #d48a12;
+  --brand-error: #c83d4d;
+  --brand-sidebar: var(--brand-primary);
+  --brand-sidebar-text: #c9d7e2;
+  --brand-font-display: "Inter", "Segoe UI", system-ui, sans-serif;
+  --brand-font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  --brand-radius: 0.75rem;
 }
 
 *,
@@ -29,8 +33,8 @@ body {
 
 .brand-wordmark {
   font-family: var(--brand-font-display);
-  font-weight: 650;
-  letter-spacing: -0.03em;
+  font-weight: 700;
+  letter-spacing: -0.025em;
 }
 
 /* —— Public landing —— */
@@ -38,12 +42,10 @@ body {
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  color: var(--brand-surface);
+  color: #fff;
   background:
-    linear-gradient(160deg, rgba(12, 18, 24, 0.55), rgba(12, 18, 24, 0.82)),
-    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(42, 111, 107, 0.45), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 90% 80%, rgba(196, 92, 38, 0.28), transparent 50%),
-    linear-gradient(180deg, #1a2834 0%, #0c1218 100%);
+    radial-gradient(ellipse 75% 60% at 82% 22%, rgba(15, 139, 141, 0.34), transparent 58%),
+    linear-gradient(145deg, #173d5c 0%, var(--brand-primary) 52%, #0c2337 100%);
   position: relative;
   overflow: hidden;
 }
@@ -101,7 +103,7 @@ body {
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: color-mix(in srgb, var(--brand-surface) 65%, var(--brand-accent-2));
+  color: #8fe2df;
   margin: 0 0 1rem;
 }
 
@@ -109,13 +111,13 @@ body {
   font-size: clamp(3rem, 9vw, 5.5rem);
   line-height: 0.95;
   margin: 0 0 1.25rem;
-  color: var(--brand-surface);
+  color: #fff;
 }
 
 .landing-lead {
   font-size: clamp(1.05rem, 2.2vw, 1.25rem);
   line-height: 1.55;
-  color: color-mix(in srgb, var(--brand-surface) 78%, transparent);
+  color: #d8e4eb;
   margin: 0 0 2rem;
   max-width: 28rem;
 }
@@ -144,7 +146,7 @@ body {
 
 .btn-landing-primary {
   background: var(--brand-accent);
-  color: #fff8f3;
+  color: #fff;
 }
 
 .btn-landing-primary:hover {
@@ -167,7 +169,7 @@ body {
 .landing-foot {
   padding: 1.25rem clamp(1.25rem, 4vw, 3rem) 1.75rem;
   font-size: 0.85rem;
-  color: color-mix(in srgb, var(--brand-surface) 45%, transparent);
+  color: #a9bdca;
 }
 
 .landing-orb {
@@ -179,8 +181,8 @@ body {
   top: 18%;
   background:
     radial-gradient(circle at 35% 35%, rgba(247, 244, 239, 0.18), transparent 55%),
-    radial-gradient(circle at 70% 70%, rgba(42, 111, 107, 0.5), transparent 60%),
-    rgba(196, 92, 38, 0.15);
+    radial-gradient(circle at 70% 70%, rgba(15, 139, 141, 0.55), transparent 60%),
+    rgba(88, 196, 198, 0.12);
   filter: blur(2px);
   animation: landing-drift 14s ease-in-out infinite alternate;
   pointer-events: none;
@@ -222,7 +224,7 @@ body {
   background:
     radial-gradient(ellipse at top left, color-mix(in srgb, var(--brand-accent-2) 35%, transparent), transparent 55%),
     radial-gradient(ellipse at bottom right, color-mix(in srgb, var(--brand-accent) 28%, transparent), transparent 50%),
-    var(--brand-bg);
+    var(--brand-primary);
 }
 
 .auth-panel {
@@ -237,7 +239,7 @@ body {
 .auth-panel .brand-wordmark {
   font-size: 1.75rem;
   margin-bottom: 0.25rem;
-  color: var(--brand-accent);
+  color: var(--brand-primary);
 }
 
 .auth-panel .auth-tagline {
@@ -271,3 +273,16 @@ body {
 .auth-back:hover {
   color: var(--brand-accent);
 }
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--brand-secondary);
+  box-shadow: 0 0 0 0.2rem rgba(15, 139, 141, 0.16);
+}
+
+.status-success,
+.text-success { color: var(--brand-success) !important; }
+.status-warning,
+.text-warning { color: var(--brand-warning) !important; }
+.status-error,
+.text-danger { color: var(--brand-error) !important; }

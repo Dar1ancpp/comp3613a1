@@ -175,7 +175,11 @@ The Manage Awards page also includes a table of existing prizes with prize name,
 
 ## Theming
 
-Branding preferences and how they were applied (landing / login / register).
+- **Colors:** deep navy primary, teal secondary, off-white/light-gray background, green success, amber warning/pending, and red error/rejected states.
+- **Type:** Inter with a system sans-serif fallback.
+- **Tone:** professional, modern, simple, student-friendly, and minimal rather than overly corporate.
+- **Wordmark:** text-only **Student Awards**; no custom MVP logo.
+- **Applied:** shared CSS brand/status tokens, public landing page, login, registration, and authenticated application shell. FastStarter placeholder branding and demo copy were removed; authentication and `/config` were retained.
 
 ## Implementation notes
 
