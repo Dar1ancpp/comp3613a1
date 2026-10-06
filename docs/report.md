@@ -46,6 +46,7 @@ erDiagram
     int id PK
     int student_id FK
     string activity_name
+    string organization
     date activity_date
     decimal hours
     string supporting_information
