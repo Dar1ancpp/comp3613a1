@@ -1,0 +1,20 @@
+{
+  "system": "Student Awards",
+  "actors": [
+    {"name": "Student", "side": "left"}
+  ],
+  "use_cases": [
+    {
+      "name": "Submit Volunteer Hours",
+      "actors": ["Student"]
+    },
+    {
+      "name": "Track Progress and Milestones",
+      "actors": ["Student"]
+    },
+    {
+      "name": "Redeem Awards",
+      "actors": ["Student"]
+    }
+  ]
+}

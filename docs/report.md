@@ -20,6 +20,8 @@ Student Awards (incentive system)
 
 ![Use case diagram](diagrams/use-case.png)
 
+Student is the only actor and starts each named workflow as its own use case (no «include» / «extend» between them). Seeing which awards exist is part of Redeem Awards, not a separate ellipse. Deliberate gap: no second actor (for example staff approval) on these flows.
+
 ## Model diagram
 
 First draft. Update this section in Phase 5 when polish revises the model, and note what changed.
