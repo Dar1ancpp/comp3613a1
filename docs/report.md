@@ -96,15 +96,82 @@ erDiagram
 
 ## Wireframes
 
-Embed each student-crafted wireframe here (Phase 4). Paths are relative to this file:
+### Submit Volunteer Hours
 
-```markdown
-### Explore / Search Publications
+![Log Volunteer Hours](wireframes/log-volunteer-hours.png)
 
-![Explore / Search Publications](wireframes/explore.png)
-```
+<!-- student-build:wireframe-coverage
+use_case: Submit Volunteer Hours
+image: docs/wireframes/log-volunteer-hours.png
+covered: yes
+-->
 
-`python manage.py report` also embeds any PNG/JPG still missing from `docs/wireframes/`.
+After submission, the page shows a success message and a **My Submissions** table below the form. The table shows activity, organization, activity date, hours, and the current `Pending`, `Approved`, or `Rejected` status. A new submission appears immediately as pending, and its status updates after administrator review.
+
+### Track Progress and Milestones
+
+![Progress and Milestones](wireframes/progress-and-milestones.png)
+
+<!-- student-build:wireframe-coverage
+use_case: Track Progress and Milestones
+image: docs/wireframes/progress-and-milestones.png
+covered: yes
+-->
+
+Verified hours and leaderboard position are derived from approved volunteer submissions. Milestone completion is derived by comparing verified hours with each milestone threshold; no additional stored progress entity is required.
+
+### Redeem Awards
+
+![Redeem Rewards](wireframes/redeem-rewards.png)
+
+<!-- student-build:wireframe-coverage
+use_case: Redeem Awards
+image: docs/wireframes/redeem-rewards.png
+covered: yes
+-->
+
+Clicking **Redeem** shows a success confirmation and adds the request to a **My Redemptions** table on the same page. The table shows prize, requested date, and `Pending`, `Approved`, `Rejected`, or `Fulfilled` status. New requests start pending and reflect later administrator processing.
+
+### Review Submitted Hours and Process Redemption Requests
+
+![Administrator Approvals](wireframes/admin-approvals.png)
+
+<!-- student-build:wireframe-coverage
+use_case: Review Submitted Hours
+image: docs/wireframes/admin-approvals.png
+covered: yes
+-->
+
+<!-- student-build:wireframe-coverage
+use_case: Process Redemption Requests
+image: docs/wireframes/admin-approvals.png
+covered: yes
+-->
+
+For a pending volunteer submission, **Review** / **View Details** exposes student, activity, organization, activity date, hours, and supporting information before approval or rejection. The main table remains concise.
+
+Pending redemptions show **Approve** and **Reject**. Approved redemptions remain visible and show **Mark as Fulfilled**; that action saves the fulfilled state and updates the student's history. Rejected and fulfilled rows have no further processing actions.
+
+### Manage Awards
+
+![Add Prize](wireframes/add-prize.png)
+
+<!-- student-build:wireframe-coverage
+use_case: Manage Awards
+image: docs/wireframes/add-prize.png
+covered: yes
+-->
+
+The Manage Awards page also includes a table of existing prizes with prize name, required hours, quantity, active status, and an edit action. Administrators can add a prize, edit its name, description, required hours, and quantity, adjust stock, and activate or deactivate it. Deletion is outside the MVP. The shown Add Prize form opens from this page.
+
+### Phase 4 review
+
+- Every use case in the use-case diagram is covered by a readable wireframe image; the shared administrator approvals image covers both review workflows.
+- The initially unclear submission and redemption completion paths are resolved through student-visible history tables and status feedback.
+- Administrator decisions now expose enough submission detail for informed review, and approved redemptions have a defined path to fulfillment.
+- Manage Awards is broader than the pictured add form; its accepted table, edit, stock, and activation states should be implemented alongside that form in Phase 5. This is an incomplete-but-fixable screen detail, not a required redraw.
+- The wireframes use **Prize/Reward** while the model uses `AWARD`. Treat these as UI labels for the same entity and choose one consistent product term during theming.
+- No Phase 4 model revision is required: the accepted refinements use existing `status`, timestamp, `active`, and quantity fields. Leaderboard rank, verified hours, milestone progress, and eligibility remain derived values.
 
 ## Theming
 
