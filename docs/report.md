@@ -6,13 +6,15 @@ Do not put your student ID in this file if you will commit it. The PDF cover add
 
 ## Assigned project
 
+Student Awards (incentive system)
+
 ## Three workflows
 
-### 1.
+### 1. Submit Volunteer Hours (Student)
 
-### 2.
+### 2. Track Progress and Milestones (Student)
 
-### 3.
+### 3. Redeem Awards (Student)
 
 ## Use case diagram
 
