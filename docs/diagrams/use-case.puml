@@ -16,10 +16,18 @@ rectangle "Student Awards" {
   usecase "Submit Volunteer Hours" as Submit_Volunteer_Hours
   usecase "Track Progress and Milestones" as Track_Progress_and_Milestones
   usecase "Redeem Awards" as Redeem_Awards
+  usecase "Review Submitted Hours" as Review_Submitted_Hours
+  usecase "Manage Awards" as Manage_Awards
+  usecase "Process Redemption Requests" as Process_Redemption_Requests
 }
+
+actor "Administrator" as Administrator
 
 Student --> Submit_Volunteer_Hours
 Student --> Track_Progress_and_Milestones
 Student --> Redeem_Awards
+Review_Submitted_Hours <-- Administrator
+Manage_Awards <-- Administrator
+Process_Redemption_Requests <-- Administrator
 
 @enduml

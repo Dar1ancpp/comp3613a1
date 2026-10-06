@@ -20,7 +20,7 @@ Student Awards (incentive system)
 
 ![Use case diagram](diagrams/use-case.png)
 
-Student is the only actor and starts each named workflow as its own use case (no «include» / «extend» between them). Seeing which awards exist is part of Redeem Awards, not a separate ellipse. Deliberate gap: no second actor (for example staff approval) on these flows.
+Student (left) starts the three primary workflows as separate associations. Administrator (right) supports them with Review Submitted Hours, Manage Awards, and Process Redemption Requests — each a separate Administrator association, no «include» / «extend» to Submit or Redeem. Seeing which awards exist stays inside Redeem Awards. Deliberate gap: Manage milestone definitions is out of this MVP (Track Progress uses whatever milestones already exist).
 
 ## Model diagram
 

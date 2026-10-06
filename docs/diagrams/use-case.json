@@ -1,7 +1,8 @@
 {
   "system": "Student Awards",
   "actors": [
-    {"name": "Student", "side": "left"}
+    {"name": "Student", "side": "left"},
+    {"name": "Administrator", "side": "right"}
   ],
   "use_cases": [
     {
@@ -15,6 +16,18 @@
     {
       "name": "Redeem Awards",
       "actors": ["Student"]
+    },
+    {
+      "name": "Review Submitted Hours",
+      "actors": ["Administrator"]
+    },
+    {
+      "name": "Manage Awards",
+      "actors": ["Administrator"]
+    },
+    {
+      "name": "Process Redemption Requests",
+      "actors": ["Administrator"]
     }
   ]
 }
