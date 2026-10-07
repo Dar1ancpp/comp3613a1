@@ -304,11 +304,14 @@ note: Student completed a thin POST handler that delegates redemption creation t
 - The management screen lists Award name, description, required hours, quantity, and active state; it supports creating Awards, editing details, adjusting stock, and activating or deactivating an Award. Deletion remains outside the MVP.
 - **Verification:** existing inventory displayed correctly; Add Award and prefilled Edit Award modals worked; name, description, required hours, and quantity saved correctly. Deactivation removed an Award from the Student catalogue and reactivation restored it. Nonpositive thresholds and negative quantities were rejected, with consistent styling and **Award** terminology.
 
-### Cross-workflow dashboard polish — in progress
+### Cross-workflow dashboard polish — verified
 
 - Student dashboard: verified hours, leaderboard rank, next-milestone progress, pending hour submissions, pending redemptions, and quick links to the three named workflows.
 - Administrator dashboard: pending hour approvals, pending redemptions, active Award count, active Awards with quantity `3` or fewer, and quick links to Approvals and Awards.
 - Dashboards are read-only landing summaries using existing workflow services/routes; they do not duplicate actions or introduce new workflows.
+- **Final verification:** testing with both student accounts and the Administrator confirmed all submission and redemption states, approved-only hour totals, milestone and dense-rank updates, Award eligibility, duplicate-pending prevention, inventory decrement on approval, Award management and validation, accurate dashboards, consistent navigation/terminology/status styling/feedback/spacing, and correct empty and populated states.
+- **Final model review:** no Phase 5 model revision was required. `Milestone` progress and leaderboard rank remain derived; redemption inventory changes occur on approval; dashboard values are read-only aggregates over the accepted entities.
+- **Polish outcome:** no further UI, workflow, or model refinements were requested after the final cross-workflow pass.
 
 ## Deployed app
 
