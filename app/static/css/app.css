@@ -420,3 +420,39 @@ body {
 @media (max-width: 576px) {
   .progress-summary { grid-template-columns: 1fr; }
 }
+
+.dashboard-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.dashboard-stat {
+  background: var(--brand-surface);
+  border: 1px solid #dfe7eb;
+  border-radius: var(--brand-radius);
+  box-shadow: 0 8px 24px rgba(18, 48, 74, 0.05);
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+  padding: 1.15rem;
+}
+
+.dashboard-stat span { color: var(--brand-muted); font-size: 0.82rem; }
+.dashboard-stat strong { color: var(--brand-primary); font-size: 1.8rem; margin: 0.25rem 0; }
+.dashboard-stat a { color: var(--brand-secondary); font-size: 0.85rem; margin-top: auto; text-decoration: none; }
+.dashboard-stat a:hover { text-decoration: underline; }
+.workflow-card > .progress { background: #e5edef; height: 0.65rem; }
+.workflow-card > .progress .progress-bar { background: var(--brand-secondary); }
+.quick-links { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.low-stock-list { display: grid; gap: 0.75rem; }
+.low-stock-list > div { align-items: center; border-bottom: 1px solid #e4eaee; display: flex; justify-content: space-between; padding-bottom: 0.75rem; }
+.low-stock-list > div:last-child { border-bottom: 0; padding-bottom: 0; }
+
+@media (max-width: 900px) {
+  .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 576px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}

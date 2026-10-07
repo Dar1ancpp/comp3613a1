@@ -3,7 +3,29 @@
 
 {% block subpage_content %}
 <div class="container-fluid py-2">
-  <h1 class="h3 mb-2">Administrator dashboard</h1>
-  <p class="text-muted mb-0">Manage Student Awards activity from this workspace.</p>
+  <div class="workflow-heading">
+    <p class="section-kicker">Administrator workspace</p>
+    <h1>Administrator dashboard</h1>
+    <p>Monitor requests and Award inventory from one summary.</p>
+  </div>
+
+  <div class="dashboard-grid mb-4">
+    <article class="dashboard-stat"><span>Pending hour approvals</span><strong>{{ summary.pending_submissions }}</strong><a href="{{ url_for('admin_approvals_view') }}">Review submissions</a></article>
+    <article class="dashboard-stat"><span>Pending redemptions</span><strong>{{ summary.pending_redemptions }}</strong><a href="{{ url_for('admin_approvals_view') }}">Review redemptions</a></article>
+    <article class="dashboard-stat"><span>Active Awards</span><strong>{{ summary.active_awards }}</strong><a href="{{ url_for('admin_awards_view') }}">Manage Awards</a></article>
+    <article class="dashboard-stat"><span>Low-stock Awards</span><strong>{{ summary.low_stock_awards|length }}</strong><a href="{{ url_for('admin_awards_view') }}">View inventory</a></article>
+  </div>
+
+  <section class="workflow-card mb-4" aria-labelledby="low-stock-heading">
+    <h2 id="low-stock-heading" class="h5 mb-3">Low-stock Awards</h2>
+    {% if summary.low_stock_awards %}
+    <div class="low-stock-list">{% for award in summary.low_stock_awards %}<div><span>{{ award.name }}</span><strong class="status-pill status-warning">{{ award.quantity_available }} left</strong></div>{% endfor %}</div>
+    {% else %}<div class="empty-state">No active Awards have {{ summary.low_stock_threshold }} or fewer items.</div>{% endif %}
+  </section>
+
+  <section class="workflow-card" aria-labelledby="admin-actions-heading">
+    <h2 id="admin-actions-heading" class="h5 mb-3">Quick links</h2>
+    <div class="quick-links"><a class="btn btn-brand" href="{{ url_for('admin_approvals_view') }}">Approvals</a><a class="btn btn-outline-secondary" href="{{ url_for('admin_awards_view') }}">Manage Awards</a></div>
+  </section>
 </div>
 {% endblock %}

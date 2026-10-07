@@ -3,7 +3,30 @@
 
 {% block subpage_content %}
 <div class="container-fluid py-2">
-  <h1 class="h3 mb-2">Welcome to Student Awards</h1>
-  <p class="text-muted mb-0">Your volunteer activity, progress, and awards will appear here.</p>
+  <div class="workflow-heading">
+    <p class="section-kicker">Student dashboard</p>
+    <h1>Welcome to Student Awards</h1>
+    <p>A quick view of your volunteering progress and open requests.</p>
+  </div>
+
+  <div class="dashboard-grid mb-4">
+    <article class="dashboard-stat"><span>Verified hours</span><strong>{{ format_hours(summary.verified_hours) }}</strong><a href="{{ url_for('progress_view') }}">View progress</a></article>
+    <article class="dashboard-stat"><span>Leaderboard rank</span><strong>{{ '#' ~ summary.rank if summary.rank else '—' }}</strong><a href="{{ url_for('progress_view') }}">View leaderboard</a></article>
+    <article class="dashboard-stat"><span>Pending hour submissions</span><strong>{{ summary.pending_submissions }}</strong><a href="{{ url_for('volunteer_hours_view') }}">View submissions</a></article>
+    <article class="dashboard-stat"><span>Pending redemptions</span><strong>{{ summary.pending_redemptions }}</strong><a href="{{ url_for('awards_view') }}">View Awards</a></article>
+  </div>
+
+  <section class="workflow-card mb-4" aria-labelledby="next-milestone-heading">
+    <h2 id="next-milestone-heading" class="h5 mb-3">Next milestone</h2>
+    {% if summary.next_milestone %}
+    <div class="d-flex justify-content-between gap-3 mb-2"><strong>{{ summary.next_milestone.name }}</strong><span class="milestone-count">{{ format_hours(summary.verified_hours) }} / {{ format_hours(summary.next_milestone.required_hours) }} hrs</span></div>
+    <div class="progress" role="progressbar" aria-label="Next milestone progress" aria-valuenow="{{ summary.next_milestone.percentage }}" aria-valuemin="0" aria-valuemax="100"><div class="progress-bar" style="width: {{ summary.next_milestone.percentage }}%"></div></div>
+    {% else %}<div class="empty-state">All configured milestones are complete.</div>{% endif %}
+  </section>
+
+  <section class="workflow-card" aria-labelledby="student-actions-heading">
+    <h2 id="student-actions-heading" class="h5 mb-3">Quick links</h2>
+    <div class="quick-links"><a class="btn btn-brand" href="{{ url_for('volunteer_hours_view') }}">Log hours</a><a class="btn btn-outline-secondary" href="{{ url_for('progress_view') }}">Progress</a><a class="btn btn-outline-secondary" href="{{ url_for('awards_view') }}">Awards</a></div>
+  </section>
 </div>
 {% endblock %}
