@@ -47,7 +47,7 @@ def cmd_init(args: argparse.Namespace) -> None:
 
 
 def cmd_seed(args: argparse.Namespace) -> None:
-    """Insert demo users.
+    """Insert demo users and Student Awards milestones.
 
     bob / bobpass       (regular_user)
     admin / adminpass   (admin)
@@ -56,6 +56,10 @@ def cmd_seed(args: argparse.Namespace) -> None:
     from app.repositories.user import UserRepository
     from app.schemas.user import AdminCreate, RegularUserCreate
     from app.utilities.security import encrypt_password
+    from app.models.milestone import Milestone
+    from app.models.award import Award
+    from decimal import Decimal
+    from sqlmodel import select
 
     _ensure_models_loaded()
     ensure_db_and_tables()
@@ -84,6 +88,45 @@ def cmd_seed(args: argparse.Namespace) -> None:
                 )
             )
             print(f"  create {username} ({role})")
+            created += 1
+
+        demo_milestones = [
+            ("Bronze Volunteer", "A strong start in community service.", Decimal("10")),
+            ("Silver Volunteer", "Continued commitment to volunteering.", Decimal("25")),
+            ("Gold Volunteer", "Outstanding volunteer contribution.", Decimal("50")),
+        ]
+        for name, description, required_hours in demo_milestones:
+            existing = session.exec(select(Milestone).where(Milestone.name == name)).first()
+            if existing:
+                print(f"  skip  {name} (already exists)")
+                skipped += 1
+                continue
+            session.add(Milestone(name=name, description=description, required_hours=required_hours))
+            session.commit()
+            print(f"  create {name} milestone")
+            created += 1
+
+        demo_awards = [
+            ("Coffee Voucher", "A voucher for the campus café.", Decimal("4"), 10),
+            ("Movie Ticket", "One standard cinema admission.", Decimal("10"), 4),
+            ("Student Awards Hoodie", "A Student Awards branded hoodie.", Decimal("25"), 2),
+        ]
+        for name, description, required_hours, quantity_available in demo_awards:
+            existing = session.exec(select(Award).where(Award.name == name)).first()
+            if existing:
+                print(f"  skip  {name} (already exists)")
+                skipped += 1
+                continue
+            session.add(
+                Award(
+                    name=name,
+                    description=description,
+                    required_hours=required_hours,
+                    quantity_available=quantity_available,
+                )
+            )
+            session.commit()
+            print(f"  create {name} Award")
             created += 1
 
     print(f"Seed done — created {created}, skipped {skipped}.")

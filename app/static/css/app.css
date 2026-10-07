@@ -350,6 +350,7 @@ body {
 .status-pending { background: #fff3d6; color: #8a5705; }
 .status-approved { background: #dff4e9; color: #17623f; }
 .status-rejected { background: #fde4e7; color: #9d2634; }
+.status-fulfilled { background: #dfeaf5; color: #234e73; }
 
 .record-count {
   color: var(--brand-muted);
@@ -402,4 +403,20 @@ body {
 @media (max-width: 576px) {
   .detail-grid { grid-template-columns: 1fr; }
   .detail-grid .detail-wide { grid-column: auto; }
+}
+
+.progress-summary { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.summary-card { background: var(--brand-primary); border-radius: var(--brand-radius); color: #d7e5ed; padding: 1.25rem 1.4rem; }
+.summary-card span { display: block; font-size: 0.82rem; margin-bottom: 0.4rem; }
+.summary-card strong { color: #fff; font-size: 1.8rem; }
+.milestone-list { display: grid; gap: 1rem; }
+.milestone-item { border-bottom: 1px solid #e4eaee; padding-bottom: 1rem; }
+.milestone-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.milestone-item .progress { background: #e5edef; height: 0.55rem; }
+.milestone-item .progress-bar { background: var(--brand-secondary); }
+.milestone-count { color: var(--brand-muted); font-size: 0.85rem; white-space: nowrap; }
+.workflow-table .current-student > * { background: #e9f7f6; }
+
+@media (max-width: 576px) {
+  .progress-summary { grid-template-columns: 1fr; }
 }

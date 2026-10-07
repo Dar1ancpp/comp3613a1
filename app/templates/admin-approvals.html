@@ -75,4 +75,28 @@
   <div class="empty-state">There are no pending volunteer-hour submissions.</div>
   {% endif %}
 </section>
+
+<section class="workflow-card mt-4" aria-labelledby="redemptions-heading">
+  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+    <h2 id="redemptions-heading" class="h5 mb-0">Redemption requests</h2>
+    <span class="record-count">{{ redemptions|length }} actionable</span>
+  </div>
+  {% if redemptions %}
+  <div class="table-responsive"><table class="table align-middle workflow-table mb-0">
+    <thead><tr><th>Student</th><th>Award</th><th>Status</th><th class="text-end">Action</th></tr></thead>
+    <tbody>{% for redemption, student, award in redemptions %}<tr>
+      <td>{{ student.username }}</td><td class="fw-semibold">{{ award.name }}</td>
+      <td><span class="status-pill status-{{ redemption.status }}">{{ redemption.status|title }}</span></td>
+      <td class="text-end"><div class="d-flex justify-content-end gap-2">
+        {% if redemption.status == 'pending' %}
+        <form method="post" action="{{ url_for('process_redemption', redemption_id=redemption.id) }}"><input type="hidden" name="decision" value="rejected"><button class="btn btn-sm btn-outline-danger" type="submit">Reject</button></form>
+        <form method="post" action="{{ url_for('process_redemption', redemption_id=redemption.id) }}"><input type="hidden" name="decision" value="approved"><button class="btn btn-sm btn-brand" type="submit">Approve</button></form>
+        {% elif redemption.status == 'approved' %}
+        <form method="post" action="{{ url_for('process_redemption', redemption_id=redemption.id) }}"><input type="hidden" name="decision" value="fulfilled"><button class="btn btn-sm btn-brand" type="submit">Mark as fulfilled</button></form>
+        {% endif %}
+      </div></td>
+    </tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}<div class="empty-state">There are no pending or approved redemption requests.</div>{% endif %}
+</section>
 {% endblock %}

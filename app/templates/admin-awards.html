@@ -1,0 +1,40 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Manage Awards · Student Awards{% endblock %}
+
+{% block subpage_content %}
+<div class="workflow-heading d-flex justify-content-between align-items-start gap-3">
+  <div><p class="section-kicker">Administrator workspace</p><h1>Manage Awards</h1><p>Create Awards and maintain thresholds, inventory, and availability.</p></div>
+  <button class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#add-award">Add Award</button>
+</div>
+
+<section class="workflow-card" aria-labelledby="award-catalogue-heading">
+  <div class="d-flex justify-content-between align-items-center gap-3 mb-3">
+    <h2 id="award-catalogue-heading" class="h5 mb-0">Award catalogue</h2><span class="record-count">{{ awards|length }} total</span>
+  </div>
+  {% if awards %}<div class="table-responsive"><table class="table align-middle workflow-table mb-0">
+    <thead><tr><th>Award</th><th>Required hours</th><th>Quantity</th><th>Status</th><th class="text-end">Action</th></tr></thead>
+    <tbody>{% for award in awards %}<tr>
+      <td><strong>{{ award.name }}</strong>{% if award.description %}<div class="small text-muted">{{ award.description }}</div>{% endif %}</td>
+      <td>{{ format_hours(award.required_hours) }}</td><td>{{ award.quantity_available }}</td>
+      <td><span class="status-pill {{ 'status-approved' if award.active else 'status-rejected' }}">{{ 'Active' if award.active else 'Inactive' }}</span></td>
+      <td class="text-end"><button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#edit-award-{{ award.id }}">Edit</button></td>
+    </tr>{% endfor %}</tbody>
+  </table></div>{% else %}<div class="empty-state">No Awards have been created.</div>{% endif %}
+</section>
+
+<div class="modal fade" id="add-award" tabindex="-1" aria-labelledby="add-award-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><form method="post" action="{{ url_for('create_award') }}">
+    <div class="modal-header"><h2 class="modal-title fs-5" id="add-award-label">Add Award</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+    <div class="modal-body">{% set award = none %}{% include "partials/award-form-fields.html" %}</div>
+    <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button class="btn btn-brand" type="submit">Create Award</button></div>
+  </form></div></div>
+</div>
+
+{% for award in awards %}<div class="modal fade" id="edit-award-{{ award.id }}" tabindex="-1" aria-labelledby="edit-award-label-{{ award.id }}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><form method="post" action="{{ url_for('update_award', award_id=award.id) }}">
+    <div class="modal-header"><h2 class="modal-title fs-5" id="edit-award-label-{{ award.id }}">Edit Award</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+    <div class="modal-body">{% include "partials/award-form-fields.html" %}</div>
+    <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button><button class="btn btn-brand" type="submit">Save changes</button></div>
+  </form></div></div>
+</div>{% endfor %}
+{% endblock %}

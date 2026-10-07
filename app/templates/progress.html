@@ -1,0 +1,51 @@
+{% extends "authenticated-base.html" %}
+{% block title %}My Progress · Student Awards{% endblock %}
+
+{% block subpage_content %}
+<div class="workflow-heading">
+  <p class="section-kicker">Student dashboard</p>
+  <h1>My Progress</h1>
+  <p>See how your approved volunteer hours translate into milestones and rank.</p>
+</div>
+
+<div class="progress-summary mb-4">
+  <article class="summary-card"><span>Verified hours</span><strong>{{ format_hours(progress.verified_hours) }}</strong></article>
+  <article class="summary-card"><span>Leaderboard rank</span><strong>{{ '#' ~ progress.rank if progress.rank else '—' }}</strong></article>
+</div>
+
+<section class="workflow-card mb-4" aria-labelledby="milestones-heading">
+  <h2 id="milestones-heading" class="h5 mb-3">Milestones</h2>
+  {% if progress.milestones %}
+  <div class="milestone-list">
+    {% for milestone in progress.milestones %}
+    <article class="milestone-item">
+      <div class="d-flex justify-content-between gap-3 mb-2">
+        <div><h3 class="h6 mb-1">{{ milestone.name }}</h3>{% if milestone.description %}<p class="text-muted small mb-0">{{ milestone.description }}</p>{% endif %}</div>
+        {% if milestone.completed %}<span class="status-pill status-approved">Complete</span>
+        {% else %}<span class="milestone-count">{{ format_hours(progress.verified_hours) }} / {{ format_hours(milestone.required_hours) }} hrs</span>{% endif %}
+      </div>
+      <div class="progress" role="progressbar" aria-label="{{ milestone.name }} progress" aria-valuenow="{{ milestone.percentage }}" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: {{ milestone.percentage }}%"></div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}<div class="empty-state">No milestones have been configured yet.</div>{% endif %}
+</section>
+
+<section class="workflow-card" aria-labelledby="leaderboard-heading">
+  <h2 id="leaderboard-heading" class="h5 mb-3">Leaderboard</h2>
+  <div class="table-responsive">
+    <table class="table align-middle workflow-table mb-0">
+      <thead><tr><th>Rank</th><th>Student</th><th>Verified hours</th></tr></thead>
+      <tbody>{% for entry in progress.leaderboard %}
+        <tr class="{{ 'current-student' if entry.is_current else '' }}">
+          <td>#{{ entry.rank }}</td>
+          <td class="fw-semibold">{{ 'You (' ~ entry.username ~ ')' if entry.is_current else entry.username }}</td>
+          <td>{{ format_hours(entry.verified_hours) }}</td>
+        </tr>
+      {% endfor %}</tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

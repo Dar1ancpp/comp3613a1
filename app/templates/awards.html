@@ -1,0 +1,63 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Awards · Student Awards{% endblock %}
+
+{% block subpage_content %}
+<div class="workflow-heading">
+  <p class="section-kicker">Student dashboard</p>
+  <h1>Awards</h1>
+  <p>Use your verified volunteer hours to request an Award.</p>
+</div>
+
+<div class="progress-summary mb-4">
+  <article class="summary-card"><span>Verified hours</span><strong>{{ format_hours(catalogue.verified_hours) }}</strong></article>
+</div>
+
+<section class="workflow-card mb-4" aria-labelledby="available-awards-heading">
+  <h2 id="available-awards-heading" class="h5 mb-3">Available Awards</h2>
+  {% if catalogue.awards %}
+  <div class="table-responsive">
+    <table class="table align-middle workflow-table mb-0">
+      <thead><tr><th>Award</th><th>Required hours</th><th>Quantity</th><th class="text-end">Action</th></tr></thead>
+      <tbody>{% for item in catalogue.awards %}
+        <tr>
+          <td><strong>{{ item.award.name }}</strong>{% if item.award.description %}<div class="small text-muted">{{ item.award.description }}</div>{% endif %}</td>
+          <td>{{ format_hours(item.award.required_hours) }}</td>
+          <td>{{ item.award.quantity_available }}</td>
+          <td class="text-end">
+            {% if item.pending %}<span class="status-pill status-pending">Pending</span>
+            {% elif item.eligible %}<button class="btn btn-sm btn-brand" data-bs-toggle="modal" data-bs-target="#redeem-{{ item.award.id }}">Redeem</button>
+            {% else %}<button class="btn btn-sm btn-outline-secondary" disabled>Locked</button>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}</tbody>
+    </table>
+  </div>
+  {% else %}<div class="empty-state">No Awards are available right now.</div>{% endif %}
+</section>
+
+<section class="workflow-card" aria-labelledby="redemptions-heading">
+  <h2 id="redemptions-heading" class="h5 mb-3">My Redemptions</h2>
+  {% if catalogue.redemptions %}
+  <div class="table-responsive"><table class="table align-middle workflow-table mb-0">
+    <thead><tr><th>Award</th><th>Requested</th><th>Status</th></tr></thead>
+    <tbody>{% for redemption, award in catalogue.redemptions %}<tr>
+      <td class="fw-semibold">{{ award.name }}</td>
+      <td>{{ redemption.requested_at.strftime('%d %b %Y') }}</td>
+      <td><span class="status-pill status-{{ redemption.status }}">{{ redemption.status|title }}</span></td>
+    </tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}<div class="empty-state">You have not requested an Award yet.</div>{% endif %}
+</section>
+
+{% for item in catalogue.awards %}{% if item.eligible and not item.pending %}
+<div class="modal fade" id="redeem-{{ item.award.id }}" tabindex="-1" aria-labelledby="redeem-label-{{ item.award.id }}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h2 class="modal-title fs-5" id="redeem-label-{{ item.award.id }}">Confirm Award redemption</h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+    <div class="modal-body">Request <strong>{{ item.award.name }}</strong> for {{ format_hours(item.award.required_hours) }} verified hours?</div>
+    <div class="modal-footer"><button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+      <form method="post" action="{{ url_for('redeem_award', award_id=item.award.id) }}"><button class="btn btn-brand" type="submit">Confirm request</button></form>
+    </div>
+  </div></div>
+</div>
+{% endif %}{% endfor %}
+{% endblock %}

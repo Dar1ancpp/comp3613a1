@@ -226,7 +226,7 @@ note: Student completed a thin POST handler that binds form data and calls Volun
 - **Administrator review:** pending submissions are listed in the Administrator Approvals view. Expandable details expose student, activity, organization, activity date, hours, and supporting information before Approve or Reject. Review decisions update `status`, `reviewed_by`, and `reviewed_at`; the repository's verified-hours aggregate includes only `approved` submissions.
 - **End-to-end verification:** two pending submissions appeared in Administrator Approvals with complete expandable details. The student approved one and rejected the other, then confirmed that both statuses updated correctly in the Student history and that whole/fractional hours rendered cleanly as `4` and `4.5`.
 
-### Track Progress and Milestones — in progress
+### Track Progress and Milestones — verified
 
 - Implementation choice: leaderboard ties use dense ranking; equal verified-hour totals share a rank and the next distinct total receives the next consecutive rank.
 
@@ -249,6 +249,60 @@ implement_confidence: 0.93
 passed: yes
 note: Student completed the Milestone model with a unique required name, optional description, and positive decimal threshold.
 -->
+
+<!-- student-build:code-check
+workflow: Track Progress and Milestones
+form: snippet
+layer: router
+architecture_ok: yes
+implement_confidence: 0.95
+passed: yes
+note: Student completed a thin GET handler that calls ProgressService and renders its result without queries or ranking logic.
+-->
+
+- **Verification:** verified hours showed `4` from the approved submission only; the rejected `4.5` hours contributed nothing. Bronze, Silver, and Gold appeared in threshold order with correct `4 / 10`, `4 / 25`, and `4 / 50` progress. The current student appeared at rank `#1`, hours were cleanly formatted, and the page matched the approved branding. No further UI or workflow polish was requested.
+
+### Redeem Awards — verified
+
+- Implementation choice: selecting an eligible Award opens a confirmation modal before the pending redemption request is submitted.
+
+<!-- student-build:code-check
+workflow: Redeem Awards
+form: choice
+layer: other
+architecture_ok: yes
+implement_confidence: 0.95
+passed: yes
+note: Student selected a confirmation modal before redemption submission.
+-->
+
+<!-- student-build:code-check
+workflow: Redeem Awards
+form: snippet
+layer: model
+architecture_ok: yes
+implement_confidence: 0.96
+passed: yes
+note: Student completed Award with its unique name, optional description, positive threshold, nonnegative inventory, and active default.
+-->
+
+<!-- student-build:code-check
+workflow: Redeem Awards
+form: snippet
+layer: router
+architecture_ok: yes
+implement_confidence: 0.97
+passed: yes
+note: Student completed a thin POST handler that delegates redemption creation to AwardService and redirects without persistence or eligibility logic.
+-->
+
+- **Verification:** Awards showed correct thresholds and quantities; the Coffee Voucher was eligible at `4` verified hours while higher thresholds stayed locked. The confirmation modal created a pending request and duplicate pending requests were prevented. Administrator approval reduced quantity from `10` to `9`; requests could be rejected or marked fulfilled, and Student history reflected both statuses. Repeat requests became available after a request left pending status. Branding consistently used **Award**.
+
+### Manage Awards — verified
+
+- Implementation choice: Administrators edit existing Awards in a prefilled modal on the management page.
+- The management screen lists Award name, description, required hours, quantity, and active state; it supports creating Awards, editing details, adjusting stock, and activating or deactivating an Award. Deletion remains outside the MVP.
+- **Verification:** existing inventory displayed correctly; Add Award and prefilled Edit Award modals worked; name, description, required hours, and quantity saved correctly. Deactivation removed an Award from the Student catalogue and reactivation restored it. Nonpositive thresholds and negative quantities were rejected, with consistent styling and **Award** terminology.
 
 ## Deployed app
 

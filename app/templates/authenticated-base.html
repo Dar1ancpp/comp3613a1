@@ -82,13 +82,25 @@
             </li>
             {% if user.role != 'admin' %}
             <li class="nav-item">
+                <a class="nav-link {{ 'active' if request.url.path == '/app/progress' }}"
+                   href="{{ url_for('progress_view') }}">Progress</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link {{ 'active' if request.url.path == '/app/hours' }}"
                    href="{{ url_for('volunteer_hours_view') }}">Log hours</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if request.url.path == '/app/awards' }}"
+                   href="{{ url_for('awards_view') }}">Awards</a>
             </li>
             {% else %}
             <li class="nav-item">
                 <a class="nav-link {{ 'active' if request.url.path == '/admin/approvals' }}"
                    href="{{ url_for('admin_approvals_view') }}">Approvals</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if request.url.path == '/admin/awards' }}"
+                   href="{{ url_for('admin_awards_view') }}">Awards</a>
             </li>
             {% endif %}
             <li class="nav-item ms-auto">

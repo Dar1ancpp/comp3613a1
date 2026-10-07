@@ -1,8 +1,11 @@
-from fastapi import APIRouter, HTTPException, Depends, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi import status
+from fastapi import Request
+from fastapi.responses import HTMLResponse
 from app.dependencies.session import SessionDep
-from app.dependencies.auth import AdminDep, IsUserLoggedIn, get_current_user, is_admin
+from app.dependencies.auth import AdminDep
+from app.repositories.award import AwardRepository
+from app.repositories.progress import ProgressRepository
+from app.repositories.volunteer_submission import VolunteerSubmissionRepository
+from app.services.dashboard_service import DashboardService
 from . import router, templates
 
 
@@ -12,10 +15,16 @@ async def admin_home_view(
     user: AdminDep,
     db:SessionDep
 ):
+    service = DashboardService(
+        ProgressRepository(db),
+        VolunteerSubmissionRepository(db),
+        AwardRepository(db),
+    )
     return templates.TemplateResponse(
         request=request, 
         name="admin.html",
         context={
-            "user": user
+            "user": user,
+            "summary": service.administrator_summary(low_stock_threshold=3),
         }
     )

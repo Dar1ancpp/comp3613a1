@@ -53,3 +53,16 @@ class VolunteerSubmissionRepository:
             VolunteerSubmission.status == "approved",
         )
         return Decimal(str(self.db.exec(statement).one()))
+
+    def count_pending_for_student(self, student_id: int) -> int:
+        statement = select(func.count(VolunteerSubmission.id)).where(
+            VolunteerSubmission.student_id == student_id,
+            VolunteerSubmission.status == "pending",
+        )
+        return int(self.db.exec(statement).one())
+
+    def count_pending(self) -> int:
+        statement = select(func.count(VolunteerSubmission.id)).where(
+            VolunteerSubmission.status == "pending"
+        )
+        return int(self.db.exec(statement).one())
