@@ -317,14 +317,16 @@ note: Student completed a thin POST handler that delegates redemption creation t
 
 Phase 6. Public Render URL (not localhost). Markers open this to mark the three workflows.
 
-https://
+https://faststarter-1ygs.onrender.com
+
+The public health endpoint returns `{"ok":true}`.
 
 ## Logins
 
 Every account a marker needs, including extra users you added. Starter accounts:
 
-- bob / bobpass — regular user
-- admin / adminpass — admin
+- `bob` / `bobpass` — `regular_user` (student)
+- `admin` / `adminpass` — `admin` (administrator)
 
 ## YouTube URL
 
